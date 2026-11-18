@@ -3,3 +3,6 @@ node_modules/
 
 # Variables de entorno (secretos)
 .env
+
+# Archivos binarios generados (p. ej. exportaciones a PDF)
+*.pdf
