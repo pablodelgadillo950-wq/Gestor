@@ -32,8 +32,13 @@ Gestor/
 │   ├── routes/               # Definición de endpoints y middlewares que aplican
 │   └── middlewares/
 │       └── authMiddleware.js # verificarToken (JWT) y verificarRol (RBAC)
-├── public/                   # Frontend estático (HTML, CSS, JS)
-├── docs/                     # Documentación técnica
+├── public/                   # Frontend estático servido por Express
+│   ├── index.html            # Estructura de las vistas (acceso y dashboard)
+│   ├── styles.css            # Variables de diseño, temas claro/oscuro y responsivo
+│   └── app.js                # Estado, cliente de la API con fetch, renderizado y eventos
+├── docs/
+│   ├── API_Y_PROCEDIMIENTOS.md # Base de datos, procedimientos y referencia de la API
+│   └── FRONTEND.md           # Arquitectura, autenticación y seguridad del frontend
 ├── .env.example              # Plantilla de variables de entorno
 └── CLAUDE.md                 # Reglas del proyecto y esquema real de la base de datos
 ```
