@@ -28,6 +28,8 @@ app.get('/api/health', async (req, res) => {
 });
 
 app.use('/api/auth', require('./src/routes/authRoutes'));
+app.use('/api/categorias', require('./src/routes/categoriaRoutes'));
+app.use('/api/transacciones', require('./src/routes/transaccionRoutes'));
 
 // --- 404 para rutas de la API no encontradas ---
 app.use('/api', (req, res) => {
