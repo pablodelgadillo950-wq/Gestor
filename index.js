@@ -27,8 +27,7 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
-// Aquí se montarán las rutas de /src/routes, por ejemplo:
-// app.use('/api/auth', require('./src/routes/auth.routes'));
+app.use('/api/auth', require('./src/routes/authRoutes'));
 
 // --- 404 para rutas de la API no encontradas ---
 app.use('/api', (req, res) => {

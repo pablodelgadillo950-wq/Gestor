@@ -20,7 +20,7 @@
 3. **Flujo de trabajo:** Explicar el plan antes de crear o editar múltiples archivos y mantener un manejo de errores limpio con `try/catch` y códigos HTTP estándar.
 
 ## Esquema Real de Base de Datos (SQL Server - Gestor)
-- **Usuarios**: `Id` (int, PK), `Correo` (nvarchar), `PasswordHash` (nvarchar), `FechaRegistro` (datetime, nullable)
+- **Usuarios**: `Id` (int, PK), `Correo` (nvarchar), `PasswordHash` (nvarchar), `Rol` (nvarchar, default 'estudiante'), `FechaRegistro` (datetime, nullable), `Rol` (nvarchar, NOT NULL, DEFAULT 'estudiante')
 - **Categorias**: `Id` (int, PK), `Nombre` (nvarchar)
 - **Transacciones**: `Id` (int, PK), `UsuarioId` (int, FK), `Tipo` (nvarchar), `Monto` (decimal), `Fecha` (date), `CategoriaId` (int, FK, nullable), `Descripcion` (nvarchar, nullable)
 - **Presupuestos**: `Id` (int, PK), `UsuarioId` (int, FK), `CategoriaId` (int, FK), `MontoLimite` (decimal), `Mes` (int), `Anio` (int)
