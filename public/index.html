@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Gestor · Finanzas para estudiantes</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M9 20l5-5 4 3 6-7' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Barra superior (solo con sesión iniciada) -->
+  <header class="topbar" id="topbar" hidden>
+    <div class="topbar__inner">
+      <div class="brand">
+        <span class="brand__logo" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><path d="M9 20l5-5 4 3 6-7"/></svg>
+        </span>
+        <span class="brand__name">Gestor</span>
+      </div>
+      <div class="usuario">
+        <div class="usuario__datos">
+          <span class="usuario__correo" id="usuario-correo"></span>
+          <span class="badge" id="usuario-rol"></span>
+        </div>
+        <button type="button" class="btn btn--ghost btn--sm" id="btn-logout">Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ Vista de autenticación ============ -->
+    <section class="auth" id="vista-auth" hidden>
+      <div class="auth__card card">
+        <div class="auth__header">
+          <span class="brand__logo brand__logo--lg" aria-hidden="true">
+            <svg viewBox="0 0 32 32"><path d="M9 20l5-5 4 3 6-7"/></svg>
+          </span>
+          <h1>Gestor</h1>
+          <p class="muted">Controla tus ingresos, gastos y presupuestos de estudiante.</p>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Acceso">
+          <button type="button" class="tabs__tab is-active" role="tab" id="tab-login" aria-selected="true" aria-controls="form-login">Iniciar sesión</button>
+          <button type="button" class="tabs__tab" role="tab" id="tab-registro" aria-selected="false" aria-controls="form-registro" tabindex="-1">Crear cuenta</button>
+        </div>
+
+        <p class="aviso" id="auth-aviso" role="status" hidden></p>
+
+        <form id="form-login" class="form" role="tabpanel" aria-labelledby="tab-login" novalidate>
+          <label class="field">
+            <span class="field__label">Correo</span>
+            <input type="email" name="correo" autocomplete="email" required>
+          </label>
+          <label class="field">
+            <span class="field__label">Contraseña</span>
+            <input type="password" name="password" autocomplete="current-password" required>
+          </label>
+          <p class="form__error" role="alert" hidden></p>
+          <button type="submit" class="btn btn--primary btn--block">Entrar</button>
+        </form>
+
+        <form id="form-registro" class="form" role="tabpanel" aria-labelledby="tab-registro" novalidate hidden>
+          <label class="field">
+            <span class="field__label">Correo</span>
+            <input type="email" name="correo" autocomplete="email" maxlength="150" required>
+          </label>
+          <label class="field">
+            <span class="field__label">Contraseña</span>
+            <input type="password" name="password" autocomplete="new-password" minlength="8" maxlength="72" required>
+            <span class="field__hint">Entre 8 y 72 caracteres.</span>
+          </label>
+          <p class="form__error" role="alert" hidden></p>
+          <button type="submit" class="btn btn--primary btn--block">Crear cuenta</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ Dashboard ============ -->
+    <div class="dashboard" id="vista-dashboard" hidden>
+
+      <!-- Resumen -->
+      <section aria-labelledby="titulo-resumen">
+        <div class="section-head">
+          <h2 id="titulo-resumen">Resumen</h2>
+          <span class="muted" id="resumen-periodo">Todos los movimientos</span>
+        </div>
+        <div class="balance">
+          <article class="card balance__card balance__card--ingreso">
+            <span class="balance__label">Total ingresos</span>
+            <strong class="balance__valor" id="total-ingresos">$0.00</strong>
+          </article>
+          <article class="card balance__card balance__card--egreso">
+            <span class="balance__label">Total egresos</span>
+            <strong class="balance__valor" id="total-egresos">$0.00</strong>
+          </article>
+          <article class="card balance__card balance__card--saldo">
+            <span class="balance__label">Saldo disponible</span>
+            <strong class="balance__valor" id="saldo">$0.00</strong>
+          </article>
+        </div>
+      </section>
+
+      <!-- Transacciones -->
+      <section class="card panel" aria-labelledby="titulo-transacciones">
+        <div class="panel__grid">
+          <div class="panel__aside">
+            <h2 id="titulo-form-transaccion">Nuevo movimiento</h2>
+            <form id="form-transaccion" class="form" novalidate>
+              <fieldset class="segmented">
+                <legend class="field__label">Tipo</legend>
+                <label class="segmented__opt segmented__opt--ingreso">
+                  <input type="radio" name="Tipo" value="Ingreso" checked>
+                  <span>Ingreso</span>
+                </label>
+                <label class="segmented__opt segmented__opt--egreso">
+                  <input type="radio" name="Tipo" value="Egreso">
+                  <span>Egreso</span>
+                </label>
+              </fieldset>
+              <div class="form__row">
+                <label class="field">
+                  <span class="field__label">Monto</span>
+                  <input type="number" name="Monto" min="0.01" max="99999999.99" step="0.01" inputmode="decimal" placeholder="0.00" required>
+                </label>
+                <label class="field">
+                  <span class="field__label">Fecha</span>
+                  <input type="date" name="Fecha" min="1753-01-01" required>
+                </label>
+              </div>
+              <label class="field">
+                <span class="field__label">Categoría</span>
+                <select name="CategoriaId" data-categorias="opcional"></select>
+              </label>
+              <label class="field">
+                <span class="field__label">Descripción <span class="muted">(opcional)</span></span>
+                <input type="text" name="Descripcion" maxlength="200" placeholder="Ej. Beca, transporte, libros…">
+              </label>
+              <p class="form__error" role="alert" hidden></p>
+              <div class="form__actions">
+                <button type="submit" class="btn btn--primary" id="btn-guardar-transaccion">Registrar</button>
+                <button type="button" class="btn btn--ghost" id="btn-cancelar-edicion" hidden>Cancelar</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="panel__main">
+            <div class="section-head">
+              <h2 id="titulo-transacciones">Historial</h2>
+              <form class="filtros" id="form-filtros" aria-label="Filtros de movimientos">
+                <label class="field field--inline">
+                  <span class="sr-only">Tipo</span>
+                  <select name="tipo">
+                    <option value="">Todos los tipos</option>
+                    <option value="Ingreso">Ingresos</option>
+                    <option value="Egreso">Egresos</option>
+                  </select>
+                </label>
+                <label class="field field--inline">
+                  <span class="sr-only">Mes</span>
+                  <input type="month" name="mes" min="1753-01">
+                </label>
+                <button type="button" class="btn btn--ghost btn--sm" id="btn-limpiar-filtros">Limpiar</button>
+              </form>
+            </div>
+            <div class="table-wrap">
+              <table class="tabla">
+                <thead>
+                  <tr>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Categoría</th>
+                    <th scope="col" class="num">Monto</th>
+                    <th scope="col"><span class="sr-only">Acciones</span></th>
+                  </tr>
+                </thead>
+                <tbody id="tabla-transacciones"></tbody>
+              </table>
+            </div>
+            <p class="vacio" id="transacciones-vacio" hidden>No hay movimientos para mostrar.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Presupuestos -->
+      <section class="card panel" aria-labelledby="titulo-presupuestos">
+        <div class="panel__grid">
+          <div class="panel__aside">
+            <h2>Asignar presupuesto</h2>
+            <form id="form-presupuesto" class="form" novalidate>
+              <label class="field">
+                <span class="field__label">Categoría</span>
+                <select name="CategoriaId" data-categorias="requerida" required></select>
+              </label>
+              <div class="form__row">
+                <label class="field">
+                  <span class="field__label">Límite mensual</span>
+                  <input type="number" name="MontoLimite" min="0.01" max="99999999.99" step="0.01" inputmode="decimal" placeholder="0.00" required>
+                </label>
+                <label class="field">
+                  <span class="field__label">Mes</span>
+                  <input type="month" name="periodo" min="2020-01" max="2100-12" required>
+                </label>
+              </div>
+              <p class="form__error" role="alert" hidden></p>
+              <div class="form__actions">
+                <button type="submit" class="btn btn--primary">Asignar</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="panel__main">
+            <div class="section-head">
+              <h2 id="titulo-presupuestos">Presupuestos</h2>
+              <label class="field field--inline">
+                <span class="sr-only">Mes de los presupuestos</span>
+                <input type="month" id="filtro-presupuestos" min="2020-01" max="2100-12">
+              </label>
+            </div>
+            <ul class="presupuestos" id="lista-presupuestos"></ul>
+            <p class="vacio" id="presupuestos-vacio" hidden>No hay presupuestos para este mes.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Administración -->
+      <section class="card panel panel--admin" id="panel-admin" aria-labelledby="titulo-admin" hidden>
+        <div class="panel__grid">
+          <div class="panel__aside">
+            <h2 id="titulo-admin">Administración</h2>
+            <p class="muted">Las categorías nuevas quedan disponibles para todos los usuarios.</p>
+            <form id="form-categoria" class="form" novalidate>
+              <label class="field">
+                <span class="field__label">Nombre de la categoría</span>
+                <input type="text" name="Nombre" maxlength="50" required>
+              </label>
+              <p class="form__error" role="alert" hidden></p>
+              <div class="form__actions">
+                <button type="submit" class="btn btn--primary">Agregar categoría</button>
+              </div>
+            </form>
+          </div>
+          <div class="panel__main">
+            <div class="section-head">
+              <h2>Categorías</h2>
+              <span class="muted" id="categorias-total"></span>
+            </div>
+            <ul class="chips" id="lista-categorias"></ul>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
