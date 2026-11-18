@@ -23,4 +23,4 @@
 - **Usuarios**: `Id` (int, PK), `Correo` (nvarchar), `PasswordHash` (nvarchar), `Rol` (nvarchar, default 'estudiante'), `FechaRegistro` (datetime, nullable), `Rol` (nvarchar, NOT NULL, DEFAULT 'estudiante')
 - **Categorias**: `Id` (int, PK), `Nombre` (nvarchar(50), índice único `UX_Categorias_Nombre`)
 - **Transacciones**: `Id` (int, PK), `UsuarioId` (int, FK), `Tipo` (nvarchar(10), CHECK `'Ingreso'`/`'Egreso'`), `Monto` (decimal(10,2), CHECK > 0), `Fecha` (date), `CategoriaId` (int, FK, nullable), `Descripcion` (nvarchar(200), nullable)
-- **Presupuestos**: `Id` (int, PK), `UsuarioId` (int, FK), `CategoriaId` (int, FK), `MontoLimite` (decimal), `Mes` (int), `Anio` (int)
+- **Presupuestos**: `Id` (int, PK), `UsuarioId` (int, FK), `CategoriaId` (int, FK), `MontoLimite` (decimal(10,2)), `Mes` (int), `Anio` (int)
