@@ -18,3 +18,9 @@
 1. **No cambiar el stack:** No instalar ORMs (Prisma, Sequelize) ni cambiar de motor de BD; usar únicamente SQL Server (`mssql`).
 2. **Seguridad:** Parametrizar todas las consultas SQL. No exponer credenciales ni secretos en el código; usar `.env`.
 3. **Flujo de trabajo:** Explicar el plan antes de crear o editar múltiples archivos y mantener un manejo de errores limpio con `try/catch` y códigos HTTP estándar.
+
+## Esquema Real de Base de Datos (SQL Server - Gestor)
+- **Usuarios**: `Id` (int, PK), `Correo` (nvarchar), `PasswordHash` (nvarchar), `FechaRegistro` (datetime, nullable)
+- **Categorias**: `Id` (int, PK), `Nombre` (nvarchar)
+- **Transacciones**: `Id` (int, PK), `UsuarioId` (int, FK), `Tipo` (nvarchar), `Monto` (decimal), `Fecha` (date), `CategoriaId` (int, FK, nullable), `Descripcion` (nvarchar, nullable)
+- **Presupuestos**: `Id` (int, PK), `UsuarioId` (int, FK), `CategoriaId` (int, FK), `MontoLimite` (decimal), `Mes` (int), `Anio` (int)
